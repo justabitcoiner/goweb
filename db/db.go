@@ -51,19 +51,19 @@ func SignUp(email string, password string) error {
 	return nil
 }
 
-func SignIn(email string, password string) error {
-	sql := `SELECT password FROM auth_user WHERE email = $1`
+func SignIn(email string, password string) (int, error) {
+	sql := `SELECT id, password FROM auth_user WHERE email = $1`
 
 	var user models.User
-	err := conn.QueryRow(context.Background(), sql, email).Scan(&user.Password)
+	err := conn.QueryRow(context.Background(), sql, email).Scan(&user.Id, &user.Password)
 	if err != nil {
 		log.Println(err)
-		return fmt.Errorf("email address doesn't exist")
+		return 0, fmt.Errorf("email address doesn't exist")
 	}
 
 	if !CheckPasswordHash(password, user.Password) {
-		return fmt.Errorf("password is incorrect")
+		return 0, fmt.Errorf("password is incorrect")
 	}
 
-	return nil
+	return user.Id, nil
 }
