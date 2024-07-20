@@ -1,0 +1,37 @@
+package views
+
+import "goweb/views/layouts"
+
+templ SignUp() {
+	@layouts.Base() {
+		<div>
+			<form hx-post="/signup" hx-disabled-el="btnSubmit" hx-target="#message">
+				<div>
+					<input type="email" name="email"/>
+				</div>
+				<div>
+					<input type="password" name="password"/>
+				</div>
+				<div id="message" style="color: red;"></div>
+				<button id="btnSubmit" type="submit">Sign Up</button>
+			</form>
+		</div>
+	}
+}
+
+templ SignIn() {
+	@layouts.Base() {
+		<div>
+			<form hx-post="/signin" hx-disabled-el="btnSubmit" hx-target="#message">
+				<div>
+					<input type="email" name="email"/>
+				</div>
+				<div>
+					<input type="password" name="password"/>
+				</div>
+				<div id="message" style="color: red;"></div>
+				<button id="btnSubmit" type="submit">Sign In</button>
+			</form>
+		</div>
+	}
+}
