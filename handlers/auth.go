@@ -18,9 +18,11 @@ func SignUp(c echo.Context) error {
 
 	err := db.SignUp(email, password)
 	if err != nil {
-		return err
+		return c.String(422, err.Error())
 	}
-	return nil
+
+	c.Response().Header().Set("HX-Redirect", "/signin")
+	return c.NoContent(200)
 }
 
 // Sign In
@@ -34,7 +36,9 @@ func SignIn(c echo.Context) error {
 
 	err := db.SignIn(email, password)
 	if err != nil {
-		return err
+		return c.String(422, err.Error())
 	}
-	return nil
+
+	c.Response().Header().Set("HX-Redirect", "/")
+	return c.NoContent(200)
 }

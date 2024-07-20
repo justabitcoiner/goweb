@@ -45,7 +45,7 @@ func SignUp(email string, password string) error {
 	_, err := conn.Exec(context.Background(), sql, email, hash)
 	if err != nil {
 		log.Println(err)
-		return err
+		return fmt.Errorf("sign up fail")
 	}
 
 	return nil
