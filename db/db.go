@@ -84,3 +84,19 @@ func GetArticleList() ([]models.Article, error) {
 
 	return article_list, nil
 }
+
+func GetArticleDetail(id string) (*models.Article, error) {
+	sql := `SELECT id, user_id, title, content FROM article WHERE id = $1`
+
+	rows, err := conn.Query(context.Background(), sql, id)
+	if err != nil {
+		return nil, err
+	}
+
+	article_list, err := pgx.CollectRows(rows, pgx.RowToStructByNameLax[models.Article])
+	if err != nil {
+		return nil, err
+	}
+
+	return &article_list[0], nil
+}

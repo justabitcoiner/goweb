@@ -33,5 +33,6 @@ func main() {
 	app.GET("/signin", handlers.GetSignInView)
 	app.POST("/signin", handlers.SignIn)
 	app.GET("/articles", handlers.GetArticleListView)
+	app.GET("/articles/:id", handlers.GetArticleDetailView)
 	app.Logger.Fatal(app.Start("localhost:9000"))
 }

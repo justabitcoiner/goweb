@@ -15,3 +15,13 @@ func GetArticleListView(c echo.Context) error {
 	}
 	return views.ArticleList(article_list).Render(c.Request().Context(), c.Response())
 }
+
+func GetArticleDetailView(c echo.Context) error {
+	id := c.Param("id")
+	article, err := db.GetArticleDetail(id)
+	if err != nil {
+		return fmt.Errorf("cannot get article detail")
+	}
+
+	return views.ArticleDetail(*article).Render(c.Request().Context(), c.Response())
+}
