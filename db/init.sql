@@ -9,3 +9,11 @@ CREATE TABLE auth_user (
 	password TEXT NOT NULL,
 	salt TEXT NOT NULL
 );
+
+CREATE TABLE article (
+    id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	user_id INT NOT NULL,
+	title TEXT NOT NULL,
+	content TEXT NOT NULL,
+	CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES auth_user(id)
+);

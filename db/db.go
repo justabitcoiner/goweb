@@ -67,3 +67,20 @@ func SignIn(email string, password string) (int, error) {
 
 	return user.Id, nil
 }
+
+// Articles
+func GetArticleList() ([]models.Article, error) {
+	sql := `SELECT id, user_id, title, content FROM article`
+
+	rows, err := conn.Query(context.Background(), sql)
+	if err != nil {
+		return nil, err
+	}
+
+	article_list, err := pgx.CollectRows(rows, pgx.RowToStructByNameLax[models.Article])
+	if err != nil {
+		return nil, err
+	}
+
+	return article_list, nil
+}
