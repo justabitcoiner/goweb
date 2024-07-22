@@ -9,8 +9,8 @@ import (
 
 func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		_, err := session.Get("session", c)
-		if err != nil {
+		sess, err := session.Get("session", c)
+		if err != nil || sess.Values["userId"] == nil {
 			return views.Unauthorized().Render(c.Request().Context(), c.Response())
 		}
 		next(c)
