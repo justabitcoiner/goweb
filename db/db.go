@@ -100,3 +100,13 @@ func GetArticleDetail(id string) (*models.Article, error) {
 
 	return &article_list[0], nil
 }
+
+func CreateNewArticle(userId int, title string, content string) error {
+	sql := `INSERT INTO article (user_id, title, content) VALUES ($1, $2, $3)`
+
+	_, err := conn.Exec(context.Background(), sql, userId, title, content)
+	if err != nil {
+		return err
+	}
+	return nil
+}
