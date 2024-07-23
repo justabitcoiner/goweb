@@ -110,3 +110,13 @@ func CreateNewArticle(userId int, title string, content string) error {
 	}
 	return nil
 }
+
+func UpdateArticle(userId int, articleId string, title string, content string) error {
+	sql := `UPDATE article SET title = $1, content = $2 WHERE id = $3 AND user_id = $4`
+
+	_, err := conn.Exec(context.Background(), sql, title, content, articleId, userId)
+	if err != nil {
+		return err
+	}
+	return nil
+}

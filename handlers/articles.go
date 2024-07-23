@@ -45,3 +45,33 @@ func GetArticleNew(c echo.Context) error {
 	c.Response().Header().Set("HX-Redirect", "/articles")
 	return c.String(200, "create new article success")
 }
+
+func GetArticleEdit(c echo.Context) error {
+	id := c.Param("id")
+	sess, _ := session.Get("session", c)
+	userId := sess.Values["userId"].(int)
+
+	if c.Request().Method == "GET" {
+		article, err := db.GetArticleDetail(id)
+
+		if err != nil {
+			return fmt.Errorf("cannot get article edit view")
+		}
+		if article.UserId != userId {
+			return views.Forbidden_403().Render(c.Request().Context(), c.Response())
+		}
+
+		return views.ArticleEdit(*article).Render(c.Request().Context(), c.Response())
+	} else {
+		title := c.FormValue("title")
+		content := c.FormValue("content")
+
+		err := db.UpdateArticle(userId, id, title, content)
+		if err != nil {
+			return c.String(422, "cannot update article")
+		}
+
+		c.Response().Header().Set("HX-Redirect", "/articles")
+		return c.String(200, "update article success")
+	}
+}
