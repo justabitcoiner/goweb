@@ -85,7 +85,7 @@ func GetArticleList() ([]models.Article, error) {
 	return article_list, nil
 }
 
-func GetArticleDetail(id string) (*models.Article, error) {
+func GetArticleDetail(id int) (*models.Article, error) {
 	sql := `SELECT id, user_id, title, content FROM article WHERE id = $1`
 
 	rows, err := conn.Query(context.Background(), sql, id)
@@ -111,10 +111,20 @@ func CreateNewArticle(userId int, title string, content string) error {
 	return nil
 }
 
-func UpdateArticle(userId int, articleId string, title string, content string) error {
+func UpdateArticle(userId int, articleId int, title string, content string) error {
 	sql := `UPDATE article SET title = $1, content = $2 WHERE id = $3 AND user_id = $4`
 
 	_, err := conn.Exec(context.Background(), sql, title, content, articleId, userId)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func DeleteArticle(userId int, articleId int) error {
+	sql := `DELETE FROM article WHERE id = $1 AND user_id = $2`
+
+	_, err := conn.Exec(context.Background(), sql, articleId, userId)
 	if err != nil {
 		return err
 	}

@@ -33,10 +33,10 @@ func main() {
 	app.GET("/signin", handlers.GetSignInView)
 	app.POST("/signin", handlers.SignIn)
 	app.GET("/articles", handlers.GetArticleListView)
-	app.GET("/articles/:id", handlers.GetArticleDetailView)
 	app.GET("/articles/new", handlers.GetArticleNew, middlewares.AuthMiddleware)
 	app.POST("/articles/new", handlers.GetArticleNew, middlewares.AuthMiddleware)
-	app.GET("/articles/:id/edit", handlers.GetArticleEdit, middlewares.AuthMiddleware)
-	app.PATCH("/articles/:id", handlers.GetArticleEdit, middlewares.AuthMiddleware)
+	app.GET("/articles/:id", handlers.GetArticleEditView, middlewares.AuthMiddleware)
+	app.PATCH("/articles/:id", handlers.GetArticleEditView, middlewares.AuthMiddleware)
+	app.DELETE("/articles/:id", handlers.GetArticleEditView, middlewares.AuthMiddleware)
 	app.Logger.Fatal(app.Start("localhost:9000"))
 }

@@ -24,6 +24,11 @@ func CreateSession(c echo.Context, userId int) error {
 	return err
 }
 
+func GetCurrentUserId(c echo.Context) int {
+	sess, _ := session.Get("session", c)
+	return sess.Values["userId"].(int)
+}
+
 // Sign Up
 func GetSignUpView(c echo.Context) error {
 	return views.SignUp().Render(c.Request().Context(), c.Response())

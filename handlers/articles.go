@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"fmt"
 	"goweb/db"
 	"goweb/views"
+	"strconv"
 
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
@@ -12,19 +12,9 @@ import (
 func GetArticleListView(c echo.Context) error {
 	article_list, err := db.GetArticleList()
 	if err != nil {
-		return fmt.Errorf("cannot get article list")
+		return c.String(422, "cannot get article list")
 	}
 	return views.ArticleList(article_list).Render(c.Request().Context(), c.Response())
-}
-
-func GetArticleDetailView(c echo.Context) error {
-	id := c.Param("id")
-	article, err := db.GetArticleDetail(id)
-	if err != nil {
-		return fmt.Errorf("cannot get article detail")
-	}
-
-	return views.ArticleDetail(*article).Render(c.Request().Context(), c.Response())
 }
 
 func GetArticleNew(c echo.Context) error {
@@ -46,23 +36,38 @@ func GetArticleNew(c echo.Context) error {
 	return c.String(200, "create new article success")
 }
 
-func GetArticleEdit(c echo.Context) error {
-	id := c.Param("id")
-	sess, _ := session.Get("session", c)
-	userId := sess.Values["userId"].(int)
+func GetArticleEditView(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.String(422, "id is invalid")
+	}
 
-	if c.Request().Method == "GET" {
-		article, err := db.GetArticleDetail(id)
+	switch c.Request().Method {
+	case "GET":
+		mode := c.QueryParam("mode")
+		if mode == "" {
+			article, err := db.GetArticleDetail(id)
+			if err != nil {
+				return c.String(422, "cannot get article detail")
+			}
 
-		if err != nil {
-			return fmt.Errorf("cannot get article edit view")
+			return views.ArticleDetail(*article).Render(c.Request().Context(), c.Response())
+		} else if mode == "edit" {
+			userId := GetCurrentUserId(c)
+			article, err := db.GetArticleDetail(id)
+			if err != nil {
+				return c.String(422, "cannot get article edit view")
+			}
+			if article.UserId != userId {
+				return views.Forbidden_403().Render(c.Request().Context(), c.Response())
+			}
+
+			return views.ArticleEdit(*article).Render(c.Request().Context(), c.Response())
+		} else {
+			return c.String(422, "does not support this view mode")
 		}
-		if article.UserId != userId {
-			return views.Forbidden_403().Render(c.Request().Context(), c.Response())
-		}
-
-		return views.ArticleEdit(*article).Render(c.Request().Context(), c.Response())
-	} else {
+	case "PATCH":
+		userId := GetCurrentUserId(c)
 		title := c.FormValue("title")
 		content := c.FormValue("content")
 
@@ -73,5 +78,16 @@ func GetArticleEdit(c echo.Context) error {
 
 		c.Response().Header().Set("HX-Redirect", "/articles")
 		return c.String(200, "update article success")
+	case "DELETE":
+		userId := GetCurrentUserId(c)
+		err := db.DeleteArticle(userId, id)
+		if err != nil {
+			return c.String(422, "cannot delete article")
+		}
+
+		c.Response().Header().Set("HX-Redirect", "/articles")
+		return c.String(200, "delete article success")
+	default:
+		return c.String(405, "Method not support")
 	}
 }

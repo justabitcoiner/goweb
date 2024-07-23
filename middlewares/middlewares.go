@@ -9,11 +9,18 @@ import (
 
 func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		sess, err := session.Get("session", c)
-		if err != nil || sess.Values["userId"] == nil {
-			return views.Unauthorized_401().Render(c.Request().Context(), c.Response())
+		mode := c.QueryParam("mode")
+		if c.Request().Method == "GET" && mode != "edit" {
+			return next(c)
 		}
-		next(c)
-		return nil
+
+		sess, err := session.Get("session", c)
+		if err == nil {
+			if sess.Values["userId"] != nil {
+				return next(c)
+			}
+		}
+
+		return views.Unauthorized_401().Render(c.Request().Context(), c.Response())
 	}
 }
