@@ -53,7 +53,10 @@ func GetArticleEditView(c echo.Context) error {
 
 			return views.ArticleDetail(*article).Render(c.Request().Context(), c.Response())
 		} else if mode == "edit" {
-			userId := GetCurrentUserId(c)
+			userId, err := GetCurrentUserId(c)
+			if err != nil {
+				return c.String(422, err.Error())
+			}
 			article, err := db.GetArticleDetail(id)
 			if err != nil {
 				return c.String(422, "cannot get article edit view")
@@ -67,11 +70,14 @@ func GetArticleEditView(c echo.Context) error {
 			return c.String(422, "does not support this view mode")
 		}
 	case "PATCH":
-		userId := GetCurrentUserId(c)
+		userId, err := GetCurrentUserId(c)
+		if err != nil {
+			return c.String(422, err.Error())
+		}
 		title := c.FormValue("title")
 		content := c.FormValue("content")
 
-		err := db.UpdateArticle(userId, id, title, content)
+		err = db.UpdateArticle(userId, id, title, content)
 		if err != nil {
 			return c.String(422, "cannot update article")
 		}
@@ -79,8 +85,11 @@ func GetArticleEditView(c echo.Context) error {
 		c.Response().Header().Set("HX-Redirect", "/articles")
 		return c.String(200, "update article success")
 	case "DELETE":
-		userId := GetCurrentUserId(c)
-		err := db.DeleteArticle(userId, id)
+		userId, err := GetCurrentUserId(c)
+		if err != nil {
+			return c.String(422, err.Error())
+		}
+		err = db.DeleteArticle(userId, id)
 		if err != nil {
 			return c.String(422, "cannot delete article")
 		}

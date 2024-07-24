@@ -24,14 +24,21 @@ func main() {
 	app.Use(session.Middleware(sessions.NewCookieStore([]byte("secret"))))
 
 	app.GET("/", func(c echo.Context) error {
-		sess, _ := session.Get("session", c)
-		userId := sess.Values["userId"].(int)
+		userId, err := handlers.GetCurrentUserId(c)
+		if err != nil {
+			return c.String(422, err.Error())
+		}
 		return c.String(200, fmt.Sprintf("Hello world, user: %v", userId))
 	}, middlewares.AuthMiddleware)
+
+	// Authentication
 	app.GET("/signup", handlers.GetSignUpView)
 	app.POST("/signup", handlers.SignUp)
 	app.GET("/signin", handlers.GetSignInView)
 	app.POST("/signin", handlers.SignIn)
+	app.GET("/signout", handlers.SignOut)
+
+	// Articles
 	app.GET("/articles", handlers.GetArticleListView)
 	app.GET("/articles/new", handlers.GetArticleNew, middlewares.AuthMiddleware)
 	app.POST("/articles/new", handlers.GetArticleNew, middlewares.AuthMiddleware)

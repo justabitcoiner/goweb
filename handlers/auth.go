@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"goweb/db"
 	"goweb/views"
 
@@ -24,9 +25,28 @@ func CreateSession(c echo.Context, userId int) error {
 	return err
 }
 
-func GetCurrentUserId(c echo.Context) int {
-	sess, _ := session.Get("session", c)
-	return sess.Values["userId"].(int)
+func DeleteSession(c echo.Context, userId int) error {
+	sess, err := session.Get("session", c)
+	if err != nil {
+		return err
+	}
+
+	sess.Values["userId"] = nil
+	err = sess.Save(c.Request(), c.Response())
+	return err
+}
+
+func GetCurrentUserId(c echo.Context) (int, error) {
+	sess, err := session.Get("session", c)
+	if err != nil {
+		return 0, err
+	}
+
+	if sess.Values["userId"] == nil {
+		return 0, fmt.Errorf("userId doesn't exist")
+	}
+
+	return sess.Values["userId"].(int), nil
 }
 
 // Sign Up
@@ -66,6 +86,17 @@ func SignIn(c echo.Context) error {
 		return c.String(422, err.Error())
 	}
 
-	c.Response().Header().Set("HX-Redirect", "/")
+	c.Response().Header().Set("HX-Redirect", "/articles")
 	return c.NoContent(200)
+}
+
+// Sign Out
+func SignOut(c echo.Context) error {
+	userId, err := GetCurrentUserId(c)
+	if err != nil {
+		return c.String(422, err.Error())
+	}
+	DeleteSession(c, userId)
+	c.Response().Header().Set("HX-Redirect", "/articles")
+	return c.String(200, "Sign out success")
 }
