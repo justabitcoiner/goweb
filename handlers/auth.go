@@ -31,7 +31,7 @@ func DeleteSession(c echo.Context, userId int) error {
 		return err
 	}
 
-	sess.Values["userId"] = nil
+	delete(sess.Values, "userId")
 	err = sess.Save(c.Request(), c.Response())
 	return err
 }
