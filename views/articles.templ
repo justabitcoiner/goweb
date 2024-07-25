@@ -7,7 +7,7 @@ import (
 )
 
 templ ArticleList(article_list []models.Article) {
-	@layouts.Base() {
+	@layouts.Base(true) {
 		<div class="bg-white py-24 sm:py-32">
 			<div class="mx-auto max-w-7xl px-6 lg:px-8">
 				<div class="mx-auto max-w-2xl lg:mx-0">
@@ -59,7 +59,7 @@ templ Article(article models.Article) {
 }
 
 templ ArticleDetail(article models.Article) {
-	@layouts.Base() {
+	@layouts.Base(true) {
 		<div class="bg-white py-24 sm:py-32">
 			<div class="mx-auto max-w-7xl px-6 lg:px-8">
 				<div class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
@@ -93,7 +93,7 @@ templ ArticleDetail(article models.Article) {
 }
 
 templ ArticleNew() {
-	@layouts.Base() {
+	@layouts.Base(true) {
 		<div class="bg-white py-24 sm:py-32">
 			<div class="mx-auto max-w-7xl px-6 lg:px-8">
 				<div class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-gray-200 pt-10 sm:mt-16 sm:pt-16">
@@ -122,7 +122,7 @@ templ ArticleNew() {
 }
 
 templ ArticleEdit(article models.Article) {
-	@layouts.Base() {
+	@layouts.Base(true) {
 		<div class="bg-white py-24 sm:py-32">
 			<div class="mx-auto max-w-7xl px-6 lg:px-8">
 				<div class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-gray-200 pt-10 sm:mt-16 sm:pt-16">

@@ -1,6 +1,6 @@
 package layouts
 
-templ Base() {
+templ Base(showNavbar bool) {
 	<html lang="en">
 		<head>
 			<meta charset="UTF-8"/>
@@ -12,7 +12,9 @@ templ Base() {
 			</script>
 		</head>
 		<body>
-			@NavigationBar(ctx.Value("userId").(int))
+			if showNavbar == true {
+				@NavigationBar(ctx.Value("userId").(int))
+			}
 			{ children... }
 		</body>
 	</html>
