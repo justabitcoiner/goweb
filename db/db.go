@@ -8,14 +8,15 @@ import (
 	"os"
 
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"golang.org/x/crypto/bcrypt"
 )
 
-var conn *pgx.Conn
+var pool *pgxpool.Pool
 
 func Connect() {
 	var err error
-	conn, err = pgx.Connect(context.Background(), "postgres://postgres:123456@localhost:5432/goweb")
+	pool, err = pgxpool.New(context.Background(), "postgres://postgres:123456@localhost:5432/goweb")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)
@@ -23,7 +24,7 @@ func Connect() {
 }
 
 func Disconnect() {
-	conn.Close(context.Background())
+	pool.Close()
 }
 
 func HashPassword(password string) (string, error) {
@@ -42,7 +43,7 @@ func SignUp(email string, password string) error {
 
 	hash, _ := HashPassword(password)
 
-	_, err := conn.Exec(context.Background(), sql, email, hash)
+	_, err := pool.Exec(context.Background(), sql, email, hash)
 	if err != nil {
 		log.Println(err)
 		return fmt.Errorf("sign up fail")
@@ -55,7 +56,7 @@ func SignIn(email string, password string) (int, error) {
 	sql := `SELECT id, password FROM auth_user WHERE email = $1`
 
 	var user models.User
-	err := conn.QueryRow(context.Background(), sql, email).Scan(&user.Id, &user.Password)
+	err := pool.QueryRow(context.Background(), sql, email).Scan(&user.Id, &user.Password)
 	if err != nil {
 		log.Println(err)
 		return 0, fmt.Errorf("email address doesn't exist")
@@ -72,7 +73,7 @@ func SignIn(email string, password string) (int, error) {
 func GetArticleList() ([]models.Article, error) {
 	sql := `SELECT id, user_id, title, content FROM article`
 
-	rows, err := conn.Query(context.Background(), sql)
+	rows, err := pool.Query(context.Background(), sql)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +89,7 @@ func GetArticleList() ([]models.Article, error) {
 func GetArticleDetail(id int) (*models.Article, error) {
 	sql := `SELECT id, user_id, title, content FROM article WHERE id = $1`
 
-	rows, err := conn.Query(context.Background(), sql, id)
+	rows, err := pool.Query(context.Background(), sql, id)
 	if err != nil {
 		return nil, err
 	}
@@ -104,7 +105,7 @@ func GetArticleDetail(id int) (*models.Article, error) {
 func CreateNewArticle(userId int, title string, content string) error {
 	sql := `INSERT INTO article (user_id, title, content) VALUES ($1, $2, $3)`
 
-	_, err := conn.Exec(context.Background(), sql, userId, title, content)
+	_, err := pool.Exec(context.Background(), sql, userId, title, content)
 	if err != nil {
 		return err
 	}
@@ -114,7 +115,7 @@ func CreateNewArticle(userId int, title string, content string) error {
 func UpdateArticle(userId int, articleId int, title string, content string) error {
 	sql := `UPDATE article SET title = $1, content = $2 WHERE id = $3 AND user_id = $4`
 
-	_, err := conn.Exec(context.Background(), sql, title, content, articleId, userId)
+	_, err := pool.Exec(context.Background(), sql, title, content, articleId, userId)
 	if err != nil {
 		return err
 	}
@@ -124,7 +125,7 @@ func UpdateArticle(userId int, articleId int, title string, content string) erro
 func DeleteArticle(userId int, articleId int) error {
 	sql := `DELETE FROM article WHERE id = $1 AND user_id = $2`
 
-	_, err := conn.Exec(context.Background(), sql, articleId, userId)
+	_, err := pool.Exec(context.Background(), sql, articleId, userId)
 	if err != nil {
 		return err
 	}
