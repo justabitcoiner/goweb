@@ -99,6 +99,10 @@ func GetArticleDetail(id int) (*models.Article, error) {
 		return nil, err
 	}
 
+	if len(article_list) == 0 {
+		return nil, nil
+	}
+
 	return &article_list[0], nil
 }
 

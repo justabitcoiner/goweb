@@ -50,7 +50,9 @@ func GetArticleEditView(c echo.Context) error {
 			if err != nil {
 				return c.String(422, "cannot get article detail")
 			}
-
+			if article == nil {
+				return views.NotFound_404().Render(c.Request().Context(), c.Response())
+			}
 			return views.ArticleDetail(*article).Render(c.Request().Context(), c.Response())
 		} else if mode == "edit" {
 			userId, err := GetCurrentUserId(c)
@@ -60,6 +62,9 @@ func GetArticleEditView(c echo.Context) error {
 			article, err := db.GetArticleDetail(id)
 			if err != nil {
 				return c.String(422, "cannot get article edit view")
+			}
+			if article == nil {
+				return views.NotFound_404().Render(c.Request().Context(), c.Response())
 			}
 			if article.UserId != userId {
 				return views.Forbidden_403().Render(c.Request().Context(), c.Response())
