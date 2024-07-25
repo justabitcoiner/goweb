@@ -22,6 +22,7 @@ func main() {
 
 	// Middlewares
 	app.Use(session.Middleware(sessions.NewCookieStore([]byte("secret"))))
+	app.Use(middlewares.WithContextMiddleware)
 
 	app.GET("/", func(c echo.Context) error {
 		userId, err := handlers.GetCurrentUserId(c)

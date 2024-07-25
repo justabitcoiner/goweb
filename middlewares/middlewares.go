@@ -1,6 +1,8 @@
 package middlewares
 
 import (
+	"context"
+	"goweb/handlers"
 	"goweb/views"
 
 	"github.com/labstack/echo-contrib/session"
@@ -22,5 +24,14 @@ func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 
 		return views.Unauthorized_401().Render(c.Request().Context(), c.Response())
+	}
+}
+
+func WithContextMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		userId, _ := handlers.GetCurrentUserId(c)
+		ctx := context.WithValue(context.Background(), "userId", userId)
+		c.SetRequest(c.Request().WithContext(ctx))
+		return next(c)
 	}
 }

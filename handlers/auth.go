@@ -97,6 +97,6 @@ func SignOut(c echo.Context) error {
 		return c.String(422, err.Error())
 	}
 	DeleteSession(c, userId)
-	c.Response().Header().Set("HX-Redirect", "/articles")
+	c.Response().Header().Set("HX-Redirect", "/signin")
 	return c.String(200, "Sign out success")
 }
