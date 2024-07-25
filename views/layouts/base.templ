@@ -35,7 +35,7 @@ templ NavigationBar(userId int) {
 	<nav class="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
 		<div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
 			<button hx-get="/articles" hx-target="body" hx-push-url="true" class="flex items-center space-x-3 rtl:space-x-reverse">
-				<img src="/static/img/mark.svg" class="h-8"/>
+				<img src="/static/img/gopher.png" class="h-8"/>
 				<span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Go</span>
 			</button>
 			<div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
@@ -52,10 +52,10 @@ templ NavigationBar(userId int) {
 				} else {
 					<div class="relative ml-3">
 						<div>
-							<button type="button" hx-on:click="openUserMenu()" class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+							<button type="button" hx-on:click="openUserMenu()" class="relative flex rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
 								<span class="absolute -inset-1.5"></span>
 								<span class="sr-only">Open user menu</span>
-								<img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt=""/>
+								<img class="h-8 w-8 rounded-full" src="/static/img/gopher.png" alt=""/>
 							</button>
 						</div>
 						<!--
