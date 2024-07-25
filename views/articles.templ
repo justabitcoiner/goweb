@@ -44,7 +44,7 @@ templ Article(article models.Article) {
 			<p class="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">{ article.Content }</p>
 		</div>
 		<div class="relative mt-8 flex items-center gap-x-4">
-			<img src="/static/img/mark.svg" alt="" class="h-10 w-10 rounded-full bg-gray-50"/>
+			<img src="/static/img/gopher.png" alt="" class="h-10 w-10 rounded-full bg-gray-50"/>
 			<div class="text-sm leading-6">
 				<p class="font-semibold text-gray-900">
 					<a href="#">
@@ -81,7 +81,7 @@ templ ArticleDetail(article models.Article) {
 							<p class="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">{ article.Content }</p>
 						</div>
 						<div class="relative mt-8 flex items-center gap-x-4">
-							<img src="/static/img/mark.svg" alt="" class="h-10 w-10 rounded-full bg-gray-50"/>
+							<img src="/static/img/gopher.png" alt="" class="h-10 w-10 rounded-full bg-gray-50"/>
 							<div class="text-sm leading-6">
 								<p class="font-semibold text-gray-900">
 									<a href="#">
@@ -107,24 +107,24 @@ templ ArticleNew() {
 						<div>
 							<label for="title" class="block text-sm font-medium leading-6 text-gray-900">Title</label>
 							<div class="mt-2">
-								<input id="title" name="title" type="text" autocomplete="title" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+								<input id="title" name="title" type="text" autocomplete="title" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"/>
 							</div>
 						</div>
 						<div class="col-span-full">
 							<label for="content" class="block text-sm font-medium leading-6 text-gray-900">Content</label>
 							<div class="mt-2">
-								<textarea id="content" name="content" rows="5" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
+								<textarea id="content" name="content" rows="5" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"></textarea>
 							</div>
 						</div>
 						<div id="message" style="color: #ef4444;"></div>
 						<div style="display: flex; justify-content: space-between;">
-							<button id="btnSubmit" type="submit" class="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" style="width: 80px;">Post</button>
+							<button id="btnSubmit" type="submit" class="rounded-md bg-sky-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600" style="width: 80px;">Post</button>
 							<button
 								type="button"
 								hx-get="/articles"
 								hx-target="body"
 								hx-push-url="true"
-								class="rounded-md bg-gray-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+								class="rounded-md bg-gray-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600"
 							>Back</button>
 						</div>
 					</form>
@@ -143,32 +143,32 @@ templ ArticleEdit(article models.Article) {
 						<div>
 							<label for="title" class="block text-sm font-medium leading-6 text-gray-900">Title</label>
 							<div class="mt-2">
-								<input id="title" name="title" type="text" value={ article.Title } autocomplete="title" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+								<input id="title" name="title" type="text" value={ article.Title } autocomplete="title" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"/>
 							</div>
 						</div>
 						<div class="col-span-full">
 							<label for="content" class="block text-sm font-medium leading-6 text-gray-900">Content</label>
 							<div class="mt-2">
-								<textarea id="content" name="content" rows="5" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">{ article.Content }</textarea>
+								<textarea id="content" name="content" rows="5" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6">{ article.Content }</textarea>
 							</div>
 						</div>
 						<div id="message" style="color: #ef4444;"></div>
 						<div style="display: flex; justify-content: space-between;">
 							<div>
-								<button id="btnSubmit" type="submit" class="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Update</button>
+								<button id="btnSubmit" type="submit" class="rounded-md bg-sky-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600">Update</button>
 								<button
 									type="button"
 									hx-get={ "/articles/" + strconv.Itoa(article.Id) }
 									hx-target="body"
 									hx-push-url="true"
-									class="rounded-md bg-gray-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+									class="rounded-md bg-gray-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600"
 								>Back</button>
 							</div>
 							<button
 								type="button"
 								hx-delete={ "/articles/" + strconv.Itoa(article.Id) }
 								hx-confirm="Are you sure you wish to delete this article?"
-								class="rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+								class="rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600"
 							>Delete</button>
 						</div>
 					</form>
